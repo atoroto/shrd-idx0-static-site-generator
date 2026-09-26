@@ -1,7 +1,5 @@
-import os
-
 from copystatic import copy_static_to_public
-from generate_page import generate_page
+from generate_page import generate_pages_recursive
 
 STATIC_DIR = "static"
 PUBLIC_DIR = "public"
@@ -11,11 +9,7 @@ TEMPLATE_PATH = "template.html"
 
 def main():
     copy_static_to_public(STATIC_DIR, PUBLIC_DIR)
-    generate_page(
-        os.path.join(CONTENT_DIR, "index.md"),
-        TEMPLATE_PATH,
-        os.path.join(PUBLIC_DIR, "index.html"),
-    )
+    generate_pages_recursive(CONTENT_DIR, TEMPLATE_PATH, PUBLIC_DIR)
 
 
 if __name__ == "__main__":

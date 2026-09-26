@@ -26,3 +26,19 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
 
     with open(dest_path, "w") as f:
         f.write(full_html)
+
+
+def generate_pages_recursive(
+    content_dir_path: str, template_path: str, dest_dir_path: str
+) -> None:
+    for entry in os.listdir(content_dir_path):
+        from_path = os.path.join(content_dir_path, entry)
+        dest_path = os.path.join(dest_dir_path, entry)
+
+        if os.path.isdir(from_path):
+            generate_pages_recursive(from_path, template_path, dest_path)
+        elif entry.endswith(".md"):
+            dest_path = os.path.join(
+                dest_dir_path, entry.removesuffix(".md") + ".html"
+            )
+            generate_page(from_path, template_path, dest_path)
