@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -47,6 +47,40 @@ class TestHTMLNode(unittest.TestCase):
         node = HTMLNode("p", "This is a paragraph")
         with self.assertRaises(NotImplementedError):
             node.to_html()
+
+
+class TestLeafNode(unittest.TestCase):
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_leaf_to_html_a(self):
+        node = LeafNode("a", "Click me", props={"href": "https://www.boot.dev"})
+        self.assertEqual(
+            node.to_html(), '<a href="https://www.boot.dev">Click me</a>'
+        )
+
+    def test_leaf_to_html_h1(self):
+        node = LeafNode("h1", "This is a heading")
+        self.assertEqual(node.to_html(), "<h1>This is a heading</h1>")
+
+    def test_leaf_to_html_no_tag(self):
+        node = LeafNode(None, "Just raw text")
+        self.assertEqual(node.to_html(), "Just raw text")
+
+    def test_leaf_to_html_no_value_raises(self):
+        node = LeafNode("p", "")
+        with self.assertRaises(ValueError):
+            node.to_html()
+
+    def test_leaf_repr(self):
+        node = LeafNode("a", "Click me", props={"href": "https://www.boot.dev"})
+        node_repr = repr(node)
+        self.assertIn("LeafNode", node_repr)
+        self.assertIn("a", node_repr)
+        self.assertIn("Click me", node_repr)
+        self.assertIn("boot.dev", node_repr)
+        self.assertNotIn("children", node_repr)
 
 
 if __name__ == "__main__":
