@@ -1,11 +1,11 @@
-from textnode import TextNode, TextType
+from copystatic import copy_static_to_public
+
+STATIC_DIR = "static"
+PUBLIC_DIR = "public"
 
 
 def main():
-    text_node = TextNode(
-        "This is some anchor text", TextType.LINK, "https://www.boot.dev"
-    )
-    print(text_node)
+    copy_static_to_public(STATIC_DIR, PUBLIC_DIR)
 
 
 if __name__ == "__main__":
