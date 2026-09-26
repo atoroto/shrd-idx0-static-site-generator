@@ -69,9 +69,13 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(node.to_html(), "Just raw text")
 
     def test_leaf_to_html_no_value_raises(self):
-        node = LeafNode("p", "")
+        node = LeafNode("p", None)
         with self.assertRaises(ValueError):
             node.to_html()
+
+    def test_leaf_to_html_empty_value_does_not_raise(self):
+        node = LeafNode("img", "", props={"src": "https://www.boot.dev/img.png"})
+        self.assertEqual(node.to_html(), '<img src="https://www.boot.dev/img.png"></img>')
 
     def test_leaf_repr(self):
         node = LeafNode("a", "Click me", props={"href": "https://www.boot.dev"})
@@ -163,7 +167,7 @@ class TestParentNode(unittest.TestCase):
             parent_node.to_html()
 
     def test_to_html_child_missing_value_raises(self):
-        parent_node = ParentNode("div", [LeafNode("span", "")])
+        parent_node = ParentNode("div", [LeafNode("span", None)])
         with self.assertRaises(ValueError):
             parent_node.to_html()
 
